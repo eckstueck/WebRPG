@@ -1,0 +1,17 @@
+html{
+	width: 100%;
+}
+body{
+	background-image: url("b.png");
+	background-color:rgba(255,0,0,0.5);
+	text-align: center;
+	margin: 0px auto 0px auto;
+	font-family: arial,sans-serif;
+}
+
+canvas{
+	opacity: 1;
+	margin: 30px auto 0px auto;
+	display: block;
+	box-shadow: 0 0 50px #000;
+}
