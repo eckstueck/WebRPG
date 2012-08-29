@@ -1,39 +1,48 @@
-/*@pjs preload="map1.png";*/
+/*@pjs preload="maps/00.png";*/
+/*@pjs preload="maps/10.png";*/
+/*@pjs preload="maps/01.png";*/
 /*@pjs preload="sprite.png";*/
 int viewWidth = 1000;
 int viewHeight = 600;
 int tileSize = 50;
 ArrayList mapList;
-ArrayList waterList;
+//ArrayList waterList;
 PImage sprite;
 PImage map1Img;
+PImage map2Img;
 boolean mapDrawn;
 Player player;
 Map currentMap;
+Maps maps;
 void setup(){
 	mapDrawn = false;
 	sprite = loadImage("sprite.png");
-	map1Img = loadImage("map1.png");
+	//map1Img = loadImage("map1.png");
+	//map2Img = loadImage("map2.png");
 	mapList = new ArrayList();
-	waterList = new ArrayList();
-	mapMatrix = new int[(viewWidth/tileSize)*(viewHeight/tileSize)];
+	mapList.add("00.png");
+	mapList.add("10.png");
+	mapList.add("01.png");	
+	//waterList = new ArrayList();
+	//mapMatrix = new int[(viewWidth/tileSize)*(viewHeight/tileSize)];
   	size(viewWidth, viewHeight);
   	player = new Player(500, 300);
-  	currentMap = new Map(viewWidth, viewHeight, tileSize, map1Img);
+  	//currentMap = new Map(viewWidth, viewHeight, tileSize, map1Img);
+	maps =  new Maps(mapList);
   	frameRate(30);
 }
 
 void draw(){
-	if (sprite != null){
-		if(currentMap.getGraphic() != null){
-			image(currentMap.getGraphic(), 0, 0);			
-			currentMap.drawWater();
+	if (sprite != null && maps != null){
+		if(maps.getCurrentMap().getGraphic() != null){
+			image(maps.getCurrentMap().getGraphic(), 0, 0);			
+			maps.getCurrentMap().drawWater();
 			player.draw();
-			currentMap.drawTrees();
+			maps.getCurrentMap().drawTrees();
 		}
 		else{
-			currentMap = new Map(viewWidth, viewHeight, tileSize, map1Img);
-			image(currentMap.draw(sprite), 0, 0);
+			//currentMap = new Map(viewWidth, viewHeight, tileSize, map1Img);
+			image(maps.getCurrentMap().draw(sprite), 0, 0);
 			// for(int i = 0; i < mapList.size(); i++){
 			// 	PGraphics map = (PGraphics) mapList.get(i);
 			// 	image(map, 0, 0);
@@ -50,6 +59,9 @@ void draw(){
 			// }
 			// 
 		}
+	}
+	else{
+		//console.log("not");
 	}
 }
 
@@ -84,9 +96,16 @@ void draw(){
  	int move = 5;
  	// Tile currentTile = new Tile(player.getX(), player.getY, tileSize);
  	if(key == 'w'){
- 		if(currentMap.getTileTypeT(new Tile(player.getX() + tileSize/2, player.getY() - move, tileSize)) == 0){
+ 		if(player.getY() - move <= 0){
+			if(maps.changeMap(0,1)){
+				player.setY(viewHeight - tileSize - 5);
+			}
+		}
+		else{
+			if(maps.getCurrentMap().getTileTypeT(new Tile(player.getX() + tileSize/2, player.getY() - move, tileSize)) == 0){
  			player.moveY(-move);
- 		}
+ 			}
+		}
  	// 	boolean move = true;
  	// 	for(int i = 0; i < treeList.size(); i++){
 		// 	Tree tree = (Tree) treeList.get(i);
@@ -105,9 +124,16 @@ void draw(){
 		// }
  	}
  	if(key == 'a'){
- 		if(currentMap.getTileTypeT(new Tile(player.getX() -move, player.getY() + tileSize/2, tileSize)) == 0){
+ 		if(player.getX() - move <= 0){
+			if(maps.changeMap(-1,0)){
+				player.setX(viewWidth - tileSize - 5);
+			}
+		}
+		else{
+			if(maps.getCurrentMap().getTileTypeT(new Tile(player.getX() -move, player.getY() + tileSize/2, tileSize)) == 0){
  			player.moveX(-move);
- 		}
+ 			}
+		}
  	// 	boolean move = true;
  	// 	for(int i = 0; i < treeList.size(); i++){
 		// 	Tree tree = (Tree) treeList.get(i);
@@ -128,14 +154,28 @@ void draw(){
  	if(key == 's'){
  		// Tile tile = new Tile(player.getX(), player.getY() + tileSize + 5, tileSize);
  		// println("s pressed " + tile.getX() + " : "+ tile.getY() + " = " + currentMap.getTileTypeT(tile));
- 		if(currentMap.getTileTypeT(new Tile(player.getX() + tileSize/2, player.getY() + tileSize + move, tileSize)) == 0){
+ 		if(player.getY() + move >= viewHeight - tileSize){
+			if(maps.changeMap(0,-1)){
+				player.setY(5);
+			}
+		}
+		else{
+			if(maps.getCurrentMap().getTileTypeT(new Tile(player.getX() + tileSize/2, player.getY() + tileSize + move, tileSize)) == 0){
  			player.moveY(move);
- 		}
+ 			}
+		}
  	}
  	if(key == 'd'){
- 		if(currentMap.getTileTypeT(new Tile(player.getX() + tileSize + move, player.getY() + tileSize/2, tileSize)) == 0){
+ 		if(player.getX() + move >= viewWidth - tileSize){
+			if(maps.changeMap(1,0)){
+				player.setX(5);
+			}
+		}
+		else{
+			if(maps.getCurrentMap().getTileTypeT(new Tile(player.getX() + tileSize + move, player.getY() + tileSize/2, tileSize)) == 0){
  			player.moveX(move);
- 		}
+ 			}
+		}
  	// 	boolean move = true;
  	// 	for(int i = 0; i < treeList.size(); i++){
 		// 	Tree tree = (Tree) treeList.get(i);
@@ -153,6 +193,7 @@ void draw(){
 		// 	player.moveX(tileSize);
 		// }
  	}
+console.log(player.getX() + " : " + player.getY());
  }
 
 class Tree{
@@ -233,6 +274,12 @@ class Player{
 	float getY(){
 		return mY;
 	}
+	void setX(float x){
+		mX = x;
+	}
+	void setY(float y){
+		mY = y;
+	}
 }
 
 class Map{
@@ -245,7 +292,7 @@ class Map{
 	PImage mSprite;
 	ArrayList mTreeList;
 	ArrayList mWaterList;
-	Map(int mapWidth,int  mapHeight, int tileSize, PImage mapImg){
+	Map(int mapWidth, int  mapHeight, int tileSize, PImage mapImg){
 		mMapWidth = mapWidth / tileSize;
 		mMapHeight = mapHeight / tileSize;
 		mTileSize = tileSize;
@@ -402,6 +449,39 @@ class Tile{
 	}
 	boolean isInside(float x, float y){
 		if (x >= mX && x <= mX + mSize && y >= mY && y <= mY + mSize){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+}
+
+class Maps{
+	Map mCurrentMap;
+	int mX;
+	int mY;
+	HashMap mMapMap = new HashMap();
+	Maps(ArrayList mapList){
+		for(int i = 0; i < mapList.size(); i++){
+			String map = (String) mapList.get(i);
+			PImage temp = loadImage("maps/" + map);
+		 	mMapMap.put(map.substring(0, 2), temp)
+		}
+	mCurrentMap = new Map(viewWidth, viewHeight, tileSize, mMapMap.get("00"));
+	mX = 0;
+	mY = 0;
+	}
+
+	void getCurrentMap(){
+		return mCurrentMap;
+	}
+	boolean changeMap(int x, int y){
+		console.log("" + (mX+x) + (mY+y));
+		if (mMapMap.get("" + (mX+x) + (mY+y))){
+			mCurrentMap = new Map(viewWidth, viewHeight, tileSize, mMapMap.get("" + (mX+x) + (mY+y)));
+			mX = mX+x;
+			mY = mY+y;
 			return true;
 		}
 		else{
