@@ -21,9 +21,9 @@ app.get('/', function (req, res) {
 io.set('log level', 1);
 io.sockets.on('connection', function (socket) {
 	console.log(green + "Server: Player %s connected" + reset, socket.id);
-	app.set(socket.id, {x: 0, y: 0});
+	//app.set(socket.id, {x: 0, y: 0, map: 00});
 	socket.emit('hello', { id: socket.id});
-	app.set(socket.id, {id: socket.id, x: 500, y: 300});
+	app.set(socket.id, {id: socket.id, x: 500, y: 300, map: 00});
 	user.push(socket.id);
 	userList = [];
 	io.sockets.clients().forEach(function (so) {
@@ -35,7 +35,7 @@ io.sockets.on('connection', function (socket) {
 
   	socket.on('playerPosition', function(data){
 		// console.log('Server: Player position (%s:%s) received', data.x, data.y);
-		app.set(socket.id, {id: socket.id, x: data.x, y: data.y});
+		app.set(socket.id, {id: socket.id, x: data.x, y: data.y, map: data.map});
 		// io.sockets.clients().forEach(function (so) {
 		// 	var po = app.get(so.id);
 		// 	console.log("Player %s at position (%s:%s)", so.id, po.x, po.y);

@@ -1,11 +1,15 @@
 class Player{
 	float mX;
 	float mY;
+	String mMap;
+	String mName;
 	PImage mSprite;
 
-	Player(float x, float y, PImage sprite){
+	Player(float x, float y, String map, String name, PImage sprite){
 		mX = x;
 		mY = y;
+		mMap = map;
+		mName = name;
 		mSprite = sprite;
 	}
 
@@ -20,6 +24,11 @@ class Player{
 	void moveY(float y){
 		mY += y;
 	}
+	void changeMap(int x, int y){
+		int mapX = int(mMap.charAt(0)) + x;
+		int mapY = int(mMap.charAt(1)) + y;
+		mMap = "" + mapX + mapY;
+	}
 	float getX(){
 		return mX;
 	}
@@ -31,5 +40,11 @@ class Player{
 	}
 	void setY(float y){
 		mY = y;
+	}
+	String getMap(){
+		return mMap;
+	}
+	void setMap(String map){
+		mMap = map;
 	}
 }

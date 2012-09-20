@@ -31,7 +31,7 @@ void setup(){
 	maps =  new Maps(mapList, viewWidth, viewHeight, tileSize);
 	
 	//creating Player
-  	player = new Player(500, 300, sprite);
+  	player = new Player(500, 300, "00", "player", sprite);
 	size(viewWidth, viewHeight);
   	frameRate(30);
 }
@@ -51,7 +51,9 @@ void draw(){
 			Iterator i = userList.entrySet().iterator();
 			while (i.hasNext()) {
  				Map.Entry me = (Map.Entry)i.next();
-  				me.getValue().draw();
+ 				if(maps.getCurrentMapString() == me.getValue().getMap()){
+ 					me.getValue().draw();
+ 				}
 			}
 			// for(int i = 0; i < userList.size(); i++){
 			// 	console.log("draw Player");
@@ -80,6 +82,7 @@ void keyPressed(){
 			//change the CurrentMap if there is one
 			if(maps.changeMap(0,1)){
 				//set Player to new position on the new Map
+				player.changeMap(0,1);
 				player.setY(viewHeight - tileSize - 5);
 			}
 		}
@@ -94,6 +97,7 @@ void keyPressed(){
  	if(key == 'a'){
  		if(player.getX() - move <= 0){
 			if(maps.changeMap(-1,0)){
+				player.changeMap(-1,0);
 				player.setX(viewWidth - tileSize - 5);
 			}
 		}
@@ -107,6 +111,7 @@ void keyPressed(){
  	if(key == 's'){
  		if(player.getY() + move >= viewHeight - tileSize){
 			if(maps.changeMap(0,-1)){
+				player.changeMap(0,-1);
 				player.setY(5);
 			}
 		}
@@ -120,6 +125,7 @@ void keyPressed(){
  	if(key == 'd'){
  		if(player.getX() + move >= viewWidth - tileSize){
 			if(maps.changeMap(1,0)){
+				player.changeMap(1,0);
 				player.setX(5);
 			}
 		}
@@ -132,13 +138,13 @@ void keyPressed(){
 	//log Player position
 	console.log("Processing: moved to " + player.getX() + " : " + player.getY());
 	if (javascript!=null){
-			javascript.playerMoved(player.getX(),player.getY());
+			javascript.playerMoved(player.getX(),player.getY(), player.getMap());
 	}
  }
 
-void createPlayer(String id, int x, int y){
-	console.log("Player " + (String)id + " created at (" + x +":" + y +")");
-	Player otherPlayer = new Player(x, y, sprite);
+void createPlayer(String id, float x, float y, String map){
+	console.log("Player " + id + " created at (" + x +":" + y +") on Map " + map);
+	Player otherPlayer = new Player(x, y, map, id, sprite);
 	userList.put(id, otherPlayer);
 }
 
@@ -147,9 +153,14 @@ void removePlayer(String id){
 	userList.remove(id);
 }
 
-void movePlayer(String id, int x, int y){
-	console.log("Player " + id + " moved to ("  + x + ":" + y +")");
+void movePlayer(String id, float x, float y, String map){
+	console.log("Player " + id + " moved to ("  + x + ":" + y +") on Map " + map );
 	Player otherPlayer = userList.get(id);
 	otherPlayer.setX(x);
 	otherPlayer.setY(y);
+	otherPlayer.setMap(map);
+}
+
+void alert(){
+	alert("bla");
 }

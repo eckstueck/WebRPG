@@ -40,4 +40,7 @@ class Maps{
 			return false;
 		}
 	}
+	String getCurrentMapString(){
+		return "" + mX + mY;
+	}
 }
