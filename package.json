@@ -1,0 +1,15 @@
+{
+  "name": "WebRPG",
+  "subdomain": "WebRPG",
+  "scripts": {
+    "start": "node WebRPGServer.js"
+  },
+  "version": "0.0.1-2",
+  "engines": {
+    "node": "0.8.x"
+  },
+  "dependencies": {
+    "socket.io": "0.9.x",
+    "express": "3.0.x"
+  }
+}

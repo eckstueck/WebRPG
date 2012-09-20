@@ -6,6 +6,18 @@ ArrayList mapList;
 PImage sprite;
 Player player;
 Maps maps;
+JavaScript javascript;
+HashMap userList = new HashMap();
+
+interface JavaScript {
+	void playerMoved(int x, int y); 
+}
+
+void bindJavascript(JavaScript js) {
+	javascript = js; 
+}
+
+JavaScript javascript;
 
 void setup(){
 	//loading Sprites
@@ -35,6 +47,17 @@ void draw(){
 			maps.getCurrentMap().drawWater();
 			//draw Trees of the CurrentMap
 			maps.getCurrentMap().drawTrees();
+			//draw other Player
+			Iterator i = userList.entrySet().iterator();
+			while (i.hasNext()) {
+ 				Map.Entry me = (Map.Entry)i.next();
+  				me.getValue().draw();
+			}
+			// for(int i = 0; i < userList.size(); i++){
+			// 	console.log("draw Player");
+			// 	Player otherPlayer = (Player) userList.get(i);
+			// 	otherPlayer.draw();
+			// }
 			//draw the Player
 			player.draw();
 		}
@@ -107,5 +130,26 @@ void keyPressed(){
 		}
  	}
 	//log Player position
-	console.log(player.getX() + " : " + player.getY());
+	console.log("Processing: moved to " + player.getX() + " : " + player.getY());
+	if (javascript!=null){
+			javascript.playerMoved(player.getX(),player.getY());
+	}
  }
+
+void createPlayer(String id, int x, int y){
+	console.log("Player " + (String)id + " created at (" + x +":" + y +")");
+	Player otherPlayer = new Player(x, y, sprite);
+	userList.put(id, otherPlayer);
+}
+
+void removePlayer(String id){
+	console.log("Player " + id + " removed");
+	userList.remove(id);
+}
+
+void movePlayer(String id, int x, int y){
+	console.log("Player " + id + " moved to ("  + x + ":" + y +")");
+	Player otherPlayer = userList.get(id);
+	otherPlayer.setX(x);
+	otherPlayer.setY(y);
+}
