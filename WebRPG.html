@@ -10,8 +10,8 @@
 		var socket;
 
 		function connectToServer() {
-			socket = io.connect('http://localhost:80/');
-			// var socket = io.connect('http://webrpg.jit.su/');
+			// socket = io.connect('http://localhost:8080/');
+			socket = io.connect('http://webrpg.jit.su/');
 			var id;
 			socket.on('hello', function(data) {
 				console.log('Javascript: %s connected', data.id);
@@ -23,7 +23,7 @@
 				console.log(data);
 				data.forEach(function (player) {
 					if(id!=player.id){
-						pjs.createPlayer(player.id, player.x, player.y, player.map);
+						pjs.createPlayer(player.id, player.x, player.y, player.d, player.map);
 					}
 				});
 			});
@@ -35,17 +35,17 @@
 
 			socket.on('addPlayer', function(data) {
 				console.log('Javascript: Player %s add to List', data.id);
-	      		pjs.createPlayer(data.id, data.x, data.y, data.map);
+	      		pjs.createPlayer(data.id, data.x, data.y, data.d, data.map);
 			});
 
 			socket.on('movePlayer', function(data) {
-				console.log('Javascript: move Player %s to (%s:%s) on Map %s', data.id, data.x, data.y, data.map);
-	      		pjs.movePlayer(data.id, data.x, data.y, data.map);
+//				console.log('Javascript: move Player %s to (%s:%s) on Map %s', data.id, data.x, data.y, data.map);
+	      		pjs.movePlayer(data.id, data.x, data.y, data.d, data.map);
 			});
 		}
 
 		function bindJavascript() {
-			console.log("in");
+			// console.log("in");
 			pjs = Processing.getInstanceById('canvas2');
 			if(pjs!=null) {
 				pjs.bindJavascript(this);
@@ -53,14 +53,14 @@
 				connectToServer();
 			}
 			if(!bound) setTimeout(bindJavascript, 2000);
-			console.log("out"); 
+			// console.log("out"); 
 		}
 
 		bindJavascript();
 
-		function playerMoved(x, y, map) {
-			console.log('Javascript: Player position (%s:%s) received (from processing.js)', x, y);
-			socket.emit('playerPosition', {x: x , y: y, map: map});
+		function playerMoved(x, y, d, map) {
+//			console.log('Javascript: Player position (%s:%s) received (from processing.js)', x, y);
+			socket.emit('playerPosition', {x: x , y: y, d: d, map: map});
 		}
 	</script>
 	<link rel="stylesheet" href="css/map.css">

@@ -4,17 +4,19 @@ class Player{
 	String mMap;
 	String mName;
 	PImage mSprite;
+	int mDirection;
 
-	Player(float x, float y, String map, String name, PImage sprite){
+	Player(float x, float y, int d, String map, String name, PImage sprite){
 		mX = x;
 		mY = y;
 		mMap = map;
 		mName = name;
 		mSprite = sprite;
+		mDirection = d;  // 0 = right; 1 = up; 2 = left; 3 = down
 	}
 
 	void draw(){
-		image(mSprite.get(150,0,50,50),mX, mY);
+		image(mSprite.get(0 + (mDirection * 50),150,50,50),mX, mY);
 	}
 
 	void moveX(float x){
@@ -46,5 +48,12 @@ class Player{
 	}
 	void setMap(String map){
 		mMap = map;
+	}
+	void setDirection(int direction){
+		mDirection = direction;
+	}
+
+	int getDirection(){
+		return mDirection;
 	}
 }

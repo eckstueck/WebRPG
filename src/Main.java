@@ -8,6 +8,7 @@ Player player;
 Maps maps;
 JavaScript javascript;
 HashMap userList = new HashMap();
+// boolean test = true;
 
 interface JavaScript {
 	void playerMoved(int x, int y); 
@@ -31,7 +32,7 @@ void setup(){
 	maps =  new Maps(mapList, viewWidth, viewHeight, tileSize);
 	
 	//creating Player
-  	player = new Player(500, 300, "00", "player", sprite);
+  	player = new Player(500, 300, 0, "00", "player", sprite);
 	size(viewWidth, viewHeight);
   	frameRate(30);
 }
@@ -45,6 +46,10 @@ void draw(){
 			image(maps.getCurrentMap().getGraphic(), 0, 0);	
 			//draw Water of the CurrentMap		
 			maps.getCurrentMap().drawWater();
+			// if (test){
+			// 	console.log(maps.getCurrentMap());
+			// 	test = false;
+			// }
 			//draw Trees of the CurrentMap
 			maps.getCurrentMap().drawTrees();
 			//draw other Player
@@ -90,6 +95,7 @@ void keyPressed(){
 			//move Player if no object block the path
 			if(maps.getCurrentMap().getTileTypeT(new Tile(player.getX() + tileSize/2, player.getY() - move, tileSize)) == 0){
  				player.moveY(-move);
+ 				player.setDirection(1);
  			}
 		}
  	}
@@ -104,6 +110,7 @@ void keyPressed(){
 		else{
 			if(maps.getCurrentMap().getTileTypeT(new Tile(player.getX() -move, player.getY() + tileSize/2, tileSize)) == 0){
  				player.moveX(-move);
+ 				player.setDirection(2);
  			}
 		}
  	}
@@ -118,6 +125,7 @@ void keyPressed(){
 		else{
 			if(maps.getCurrentMap().getTileTypeT(new Tile(player.getX() + tileSize/2, player.getY() + tileSize + move, tileSize)) == 0){
  				player.moveY(move);
+ 				player.setDirection(3);
  			}
 		}
  	}
@@ -132,19 +140,20 @@ void keyPressed(){
 		else{
 			if(maps.getCurrentMap().getTileTypeT(new Tile(player.getX() + tileSize + move, player.getY() + tileSize/2, tileSize)) == 0){
  				player.moveX(move);
+ 				player.setDirection(0);
  			}
 		}
  	}
 	//log Player position
-	console.log("Processing: moved to " + player.getX() + " : " + player.getY());
+//	console.log("Processing: moved to " + player.getX() + " : " + player.getY());
 	if (javascript!=null){
-			javascript.playerMoved(player.getX(),player.getY(), player.getMap());
+			javascript.playerMoved(player.getX(), player.getY(), player.getDirection(), player.getMap());
 	}
  }
 
-void createPlayer(String id, float x, float y, String map){
+void createPlayer(String id, float x, float y, int d, String map){
 	console.log("Player " + id + " created at (" + x +":" + y +") on Map " + map);
-	Player otherPlayer = new Player(x, y, map, id, sprite);
+	Player otherPlayer = new Player(x, y, d, map, id, sprite);
 	userList.put(id, otherPlayer);
 }
 
@@ -153,12 +162,13 @@ void removePlayer(String id){
 	userList.remove(id);
 }
 
-void movePlayer(String id, float x, float y, String map){
-	console.log("Player " + id + " moved to ("  + x + ":" + y +") on Map " + map );
+void movePlayer(String id, float x, float y, int d, String map){
+//	console.log("Player " + id + " moved to ("  + x + ":" + y +") on Map " + map );
 	Player otherPlayer = userList.get(id);
 	otherPlayer.setX(x);
 	otherPlayer.setY(y);
 	otherPlayer.setMap(map);
+	otherPlayer.setDirection(d);
 }
 
 void alert(){

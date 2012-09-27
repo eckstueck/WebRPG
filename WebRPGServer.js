@@ -9,6 +9,7 @@ var app = require('express')()
   , server = require('http').createServer(app)
   , io = require('socket.io').listen(server);
 
+// server.listen(8080);
 server.listen(80);
 
 app.get('/*/*.(js|css|java|png)', function(req, res){
@@ -23,7 +24,7 @@ io.sockets.on('connection', function (socket) {
 	console.log(green + "Server: Player %s connected" + reset, socket.id);
 	//app.set(socket.id, {x: 0, y: 0, map: 00});
 	socket.emit('hello', { id: socket.id});
-	app.set(socket.id, {id: socket.id, x: 500, y: 300, map: 00});
+	app.set(socket.id, {id: socket.id, x: 500, y: 300, d: 0, map: 00});
 	user.push(socket.id);
 	userList = [];
 	io.sockets.clients().forEach(function (so) {
@@ -35,7 +36,7 @@ io.sockets.on('connection', function (socket) {
 
   	socket.on('playerPosition', function(data){
 		// console.log('Server: Player position (%s:%s) received', data.x, data.y);
-		app.set(socket.id, {id: socket.id, x: data.x, y: data.y, map: data.map});
+		app.set(socket.id, {id: socket.id, x: data.x, y: data.y, d: data.d, map: data.map});
 		// io.sockets.clients().forEach(function (so) {
 		// 	var po = app.get(so.id);
 		// 	console.log("Player %s at position (%s:%s)", so.id, po.x, po.y);
