@@ -15,8 +15,10 @@ class Maps{
 		for(int i = 0; i < mapList.size(); i++){
 			String map = (String) mapList.get(i);
 			PImage temp = loadImage("./maps/" + map);
-			// console.log(temp.pixels);
+			console.log(temp.pixels);
 		 	mMapMap.put(map.substring(0, 2), temp)
+
+		 	console.log(hex(-16711857));
 		}
 	mCurrentMap = new Map(viewWidth, viewHeight, tileSize, mMapMap.get("00"));
 	mX = 0;

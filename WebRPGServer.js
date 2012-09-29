@@ -10,7 +10,7 @@ var app = require('express')()
   , io = require('socket.io').listen(server);
 
 // server.listen(8080);
-server.listen(80);
+server.listen(81);
 
 app.get('/*/*.(js|css|java|png)', function(req, res){
   res.sendfile("."+req.url);

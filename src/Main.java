@@ -1,4 +1,4 @@
-/*@pjs 	preload="./maps/00.png, ./maps/10.png, ./maps/01.png, ./sprites/sprite.png";*/
+/*@pjs 	preload="./maps/00.jpg, ./maps/10.png, ./maps/01.png, ./sprites/sprite.png";*/
 final int viewWidth = 1000;
 final int viewHeight = 600;
 final int tileSize = 50;
@@ -26,7 +26,7 @@ void setup(){
 	
 	//creating Map list and loading Maps
 	mapList = new ArrayList();
-	mapList.add("00.png");
+	mapList.add("00.jpg");
 	mapList.add("10.png");
 	mapList.add("01.png");
 	maps =  new Maps(mapList, viewWidth, viewHeight, tileSize);
