@@ -120,21 +120,18 @@
 		  }
 		});
 
-		//soundManager.play('maintheme');
+		
 
 		
 		$(document).ready(function() {
 			
-
 			$("canvas").hide();
 			$("#chat").hide();
 	    	$("#loginbutton").click(function ( event ) {
 
-
-	    		soundManager.play('fight_1');
-
 	    		if($("#input1").val() != "" && connected)
 	    		{
+	    			soundManager.play('maintheme');
 	    			socket.emit('playerName', {name: $("#input1").val()}, function (data) {
 	    				if (data == "ok"){
 			    			$("#login").fadeOut('slow');
