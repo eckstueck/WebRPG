@@ -5,6 +5,8 @@ class Player{
 	String mName;
 	PImage mSprite;
 	int mDirection;
+	boolean mMoving;
+	int mMovingLeft;
 
 	Player(float x, float y, int d, String map, String name, PImage sprite){
 		mX = x;
@@ -13,19 +15,92 @@ class Player{
 		mName = name;
 		mSprite = sprite;
 		mDirection = d;  // 0 = right; 1 = up; 2 = left; 3 = down
+		mMoving = false;
+		mMovingLeft = 0;
 	}
 
 	void draw(){
-		image(mSprite.get(0 + (mDirection * 50),150,50,50),mX, mY);
+		if (mMovingLeft != 0) {
+			switch (mDirection){
+				case 0:
+					var sprite = abs((mMovingLeft - 50) / 5);
+					mX += 5;
+					mMovingLeft -= 5;
+					image(mSprite.get(0 + (50*sprite),0,50,50),mX, mY);
+					if (mMovingLeft == 0) mMoving = false;
+					break;
+
+				case 1:
+					var sprite = abs((mMovingLeft - 50) / 5);
+					mY -= 5;
+					mMovingLeft -= 5;
+					image(mSprite.get(0 + (50*sprite),150,50,50),mX, mY);
+					if (mMovingLeft == 0) mMoving = false;
+					break;
+
+			    case 2:
+					var sprite = abs((mMovingLeft - 50) / 5);
+					mX -= 5;
+					mMovingLeft -= 5;
+					image(mSprite.get(0 + (50*sprite),50,50,50),mX, mY);
+					if (mMovingLeft == 0) mMoving = false;
+					break;
+
+				case 3:
+					var sprite = abs((mMovingLeft - 50) / 5);
+					mY += 5;
+					mMovingLeft -= 5;
+					image(mSprite.get(0 + (50*sprite),100,50,50),mX, mY);
+					if (mMovingLeft == 0) mMoving = false;
+					break;
+			}
+		}
+		else{
+			mMoving = false;
+			switch (mDirection){
+				case 0:
+					image(mSprite.get(0,0,50,50),mX, mY);
+					break;
+				case 1:
+					image(mSprite.get(0,150,50,50),mX, mY);
+					break;
+				case 2:
+					image(mSprite.get(0,50,50,50),mX, mY);
+					break;
+				case 3:
+					image(mSprite.get(0,100,50,50),mX, mY);
+					break;
+			}
+				
+		}
 	}
 
-	void moveX(float x){
-		mX += x;
+	void move(int direction){
+		mMoving = true;
+		mDirection = direction;
+		mMovingLeft = 50;
 	}
 
-	void moveY(float y){
-		mY += y;
+	void moveAgain(int direction){
+		mMoving = true;
+		mDirection = direction;
+		mMovingLeft = 50;
+		switch(direction){
+			case 0:
+				mX -= 50;
+				break;
+			case 1:
+				mY += 50;
+				break;
+			case 2:
+				mX += 50;
+				break;
+			case 3:
+				mY -= 50;
+				break;
+		}
 	}
+
 	void changeMap(int x, int y){
 		int mapX = int(mMap.charAt(0)) + x;
 		int mapY = int(mMap.charAt(1)) + y;
@@ -55,5 +130,8 @@ class Player{
 
 	int getDirection(){
 		return mDirection;
+	}
+	boolean moving(){
+		return mMoving;
 	}
 }

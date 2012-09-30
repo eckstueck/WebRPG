@@ -1,4 +1,4 @@
-/*@pjs 	preload="./maps/00.jpg, ./maps/10.png, ./maps/01.png, ./sprites/sprite.png";*/
+/*@pjs 	preload=" ./maps/00.png, ./maps/10.png, ./maps/01.png, ./maps/0-1.png, ./maps/-1-1.png, ./sprites/sprite.png, ./sprites/charSprites.png";*/
 final int viewWidth = 1000;
 final int viewHeight = 600;
 final int tileSize = 50;
@@ -8,7 +8,6 @@ Player player;
 Maps maps;
 JavaScript javascript;
 HashMap userList = new HashMap();
-// boolean test = true;
 
 interface JavaScript {
 	void playerMoved(int x, int y); 
@@ -23,18 +22,24 @@ JavaScript javascript;
 void setup(){
 	//loading Sprites
 	sprite = loadImage("./sprites/sprite.png");
+	sprite2 = loadImage("./sprites/charSprites.png");
 	
-	//creating Map list and loading Maps
-	mapList = new ArrayList();
-	mapList.add("00.jpg");
-	mapList.add("10.png");
-	mapList.add("01.png");
-	maps =  new Maps(mapList, viewWidth, viewHeight, tileSize);
-	
-	//creating Player
-  	player = new Player(500, 300, 0, "00", "player", sprite);
 	size(viewWidth, viewHeight);
   	frameRate(30);
+}
+
+void start(String name, float x, float y, int d, String map){
+	//creating Map list and loading Maps
+	mapList = new ArrayList();
+	mapList.add("00.png");
+	mapList.add("10.png");
+	mapList.add("01.png");
+	mapList.add("0-1.png");
+	mapList.add("-1-1.png");
+	maps =  new Maps(mapList, viewWidth, viewHeight, tileSize, map);
+	
+	//creating Player
+  	player = new Player(x, y, d, map, name, sprite2);
 }
 
 void draw(){
@@ -50,8 +55,6 @@ void draw(){
 			// 	console.log(maps.getCurrentMap());
 			// 	test = false;
 			// }
-			//draw Trees of the CurrentMap
-			maps.getCurrentMap().drawTrees();
 			//draw other Player
 			Iterator i = userList.entrySet().iterator();
 			while (i.hasNext()) {
@@ -67,6 +70,8 @@ void draw(){
 			// }
 			//draw the Player
 			player.draw();
+			//draw Trees of the CurrentMap
+			maps.getCurrentMap().drawTrees();
 		}
 		else{
 			//created CurrentMap
@@ -79,81 +84,135 @@ void draw(){
 }
 
 void keyPressed(){
- 	int move = 5;
+ 	// int moved = 0;
 
  	if(key == 'w'){
-		//if Player leave the CurrentMap
- 		if(player.getY() - move <= 0){
-			//change the CurrentMap if there is one
-			if(maps.changeMap(0,1)){
-				//set Player to new position on the new Map
-				player.changeMap(0,1);
-				player.setY(viewHeight - tileSize - 5);
-			}
-		}
-		else{	
-			//move Player if no object block the path
-			if(maps.getCurrentMap().getTileTypeT(new Tile(player.getX() + tileSize/2, player.getY() - move, tileSize)) == 0){
- 				player.moveY(-move);
+ 		if (!player.moving()) {
+ 			if (player.getDirection() != 1){
  				player.setDirection(1);
+ 				if (javascript!=null) javascript.playerMoved(player.getX(), player.getY(), player.getDirection(), player.getMap(), 1);
  			}
+ 			else{
+				//if Player leave the CurrentMap
+		 		if(player.getY() - tileSize < 0){
+					//change the CurrentMap if there is one
+					if(maps.changeMap(0,1)){
+						//set Player to new position on the new Map
+						player.changeMap(0,1);
+						player.setY(viewHeight - tileSize);
+						if (javascript!=null) javascript.playerMoved(player.getX(), player.getY(), player.getDirection(), player.getMap(), 1);
+					}
+				}
+				else{	
+					//move Player if no object block the path
+					if(maps.getCurrentMap().getTileTypeT(new Tile(player.getX(), player.getY()- tileSize, tileSize)) == 0){
+		 				player.move(1);
+		 				if (javascript!=null) javascript.playerMoved(player.getX(), player.getY() - 50, 1, player.getMap(), 2);
+		 			}
+				}
+			}
 		}
  	}
 
  	if(key == 'a'){
- 		if(player.getX() - move <= 0){
-			if(maps.changeMap(-1,0)){
-				player.changeMap(-1,0);
-				player.setX(viewWidth - tileSize - 5);
-			}
-		}
-		else{
-			if(maps.getCurrentMap().getTileTypeT(new Tile(player.getX() -move, player.getY() + tileSize/2, tileSize)) == 0){
- 				player.moveX(-move);
+ 		if (!player.moving()) {
+ 			if (player.getDirection() != 2){
  				player.setDirection(2);
+ 				if (javascript!=null) javascript.playerMoved(player.getX(), player.getY(), player.getDirection(), player.getMap(), 1);
  			}
+ 			else{
+				if(player.getX() - tileSize < 0){
+					if(maps.changeMap(-1,0)){
+						player.changeMap(-1,0);
+						player.setX(viewWidth - tileSize);
+						if (javascript!=null) javascript.playerMoved(player.getX(), player.getY(), player.getDirection(), player.getMap(), 1);
+					}
+				}
+				else{
+					if(maps.getCurrentMap().getTileTypeT(new Tile(player.getX() - tileSize, player.getY(), tileSize)) == 0){
+		 				player.move(2);
+		 				if (javascript!=null) javascript.playerMoved(player.getX() -50, player.getY(), 2, player.getMap(), 2);
+		 			}
+				}
+			}
 		}
  	}
 
  	if(key == 's'){
- 		if(player.getY() + move >= viewHeight - tileSize){
-			if(maps.changeMap(0,-1)){
-				player.changeMap(0,-1);
-				player.setY(5);
-			}
-		}
-		else{
-			if(maps.getCurrentMap().getTileTypeT(new Tile(player.getX() + tileSize/2, player.getY() + tileSize + move, tileSize)) == 0){
- 				player.moveY(move);
+ 		if (!player.moving()) {
+ 			if (player.getDirection() != 3){
  				player.setDirection(3);
+ 				if (javascript!=null) javascript.playerMoved(player.getX(), player.getY(), player.getDirection(), player.getMap(), 1);
  			}
+ 			else{
+				if(player.getY() + tileSize >= viewHeight){
+					if(maps.changeMap(0,-1)){
+						player.changeMap(0,-1);
+						player.setY(0);
+						if (javascript!=null) javascript.playerMoved(player.getX(), player.getY(), player.getDirection(), player.getMap(), 1);
+					}
+				}
+				else{
+					if(maps.getCurrentMap().getTileTypeT(new Tile(player.getX(), player.getY() + tileSize, tileSize)) == 0){
+		 				player.move(3);
+		 				if (javascript!=null) javascript.playerMoved(player.getX(), player.getY() + 50, 3, player.getMap(), 2);
+		 			}
+				}
+			}
 		}
  	}
 
  	if(key == 'd'){
- 		if(player.getX() + move >= viewWidth - tileSize){
-			if(maps.changeMap(1,0)){
-				player.changeMap(1,0);
-				player.setX(5);
-			}
-		}
-		else{
-			if(maps.getCurrentMap().getTileTypeT(new Tile(player.getX() + tileSize + move, player.getY() + tileSize/2, tileSize)) == 0){
- 				player.moveX(move);
+ 		if (!player.moving()) {
+ 			if (player.getDirection() != 0){
  				player.setDirection(0);
+ 				if (javascript!=null) javascript.playerMoved(player.getX(), player.getY(), player.getDirection(), player.getMap(), 1);
  			}
+ 			else{
+		 		if(player.getX() + tileSize >= viewWidth){
+					if(maps.changeMap(1,0)){
+						player.changeMap(1,0);
+						player.setX(0);
+						if (javascript!=null) javascript.playerMoved(player.getX(), player.getY(), player.getDirection(), player.getMap(), 1);
+					}
+				}
+				else{
+					if(maps.getCurrentMap().getTileTypeT(new Tile(player.getX() + tileSize, player.getY(), tileSize)) == 0){
+		 				player.move(0);
+		 				if (javascript!=null) javascript.playerMoved(player.getX() + 50, player.getY(), 0, player.getMap(), 2);
+		 			}
+				}
+			}
 		}
  	}
 	//log Player position
 //	console.log("Processing: moved to " + player.getX() + " : " + player.getY());
-	if (javascript!=null){
-			javascript.playerMoved(player.getX(), player.getY(), player.getDirection(), player.getMap());
-	}
+	// if (javascript!=null && moved != 0){
+	// 	if (moved == 2) {
+	// 		switch(player.getDirection()){
+	// 			case 0:
+	// 				javascript.playerMoved(player.getX() + 50, player.getY(), player.getDirection(), player.getMap(), moved);
+	// 				break;
+	// 			case 1:
+	// 				javascript.playerMoved(player.getX(), player.getY() - 50, player.getDirection(), player.getMap(), moved);
+	// 				break;
+	// 			case 2:
+	// 				javascript.playerMoved(player.getX() - 50, player.getY(), player.getDirection(), player.getMap(), moved);
+	// 				break;
+	// 			case 3:
+	// 				javascript.playerMoved(player.getX(), player.getY() + 50, player.getDirection(), player.getMap(), moved);
+	// 				break;																
+	// 		}
+	// 	}
+	// 	else{
+	// 		javascript.playerMoved(player.getX(), player.getY(), player.getDirection(), player.getMap(), moved);
+	// 	}
+	// }
  }
 
 void createPlayer(String id, float x, float y, int d, String map){
 	console.log("Player " + id + " created at (" + x +":" + y +") on Map " + map);
-	Player otherPlayer = new Player(x, y, d, map, id, sprite);
+	Player otherPlayer = new Player(x, y, d, map, id, sprite2);
 	userList.put(id, otherPlayer);
 }
 
@@ -162,13 +221,17 @@ void removePlayer(String id){
 	userList.remove(id);
 }
 
-void movePlayer(String id, float x, float y, int d, String map){
+void movePlayer(String id, float x, float y, int d, String map, int moved){
 //	console.log("Player " + id + " moved to ("  + x + ":" + y +") on Map " + map );
+	console.log(d);
 	Player otherPlayer = userList.get(id);
 	otherPlayer.setX(x);
 	otherPlayer.setY(y);
 	otherPlayer.setMap(map);
 	otherPlayer.setDirection(d);
+	if (moved == 2){
+		otherPlayer.moveAgain(d);
+	}
 }
 
 void alert(){

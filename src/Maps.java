@@ -11,21 +11,41 @@ class Maps{
 	//  -11  01  11
 	//  -10  00  10
 	//  -1-1 0-1 1-1
-	Maps(ArrayList mapList, viewWidth, viewHeight, tileSize){
+	Maps(ArrayList mapList, viewWidth, viewHeight, tileSize, currentMap){
 		for(int i = 0; i < mapList.size(); i++){
 			String map = (String) mapList.get(i);
 			PImage temp = loadImage("./maps/" + map);
-			console.log(temp.pixels);
-		 	mMapMap.put(map.substring(0, 2), temp)
-
-		 	console.log(hex(-16711857));
+		 	mMapMap.put(map.substring(0, map.indexOf('.')), temp);
 		}
-	mCurrentMap = new Map(viewWidth, viewHeight, tileSize, mMapMap.get("00"));
-	mX = 0;
-	mY = 0;
+	mCurrentMap = new Map(viewWidth, viewHeight, tileSize, mMapMap.get(currentMap));
+	mapStringToInt(currentMap);
+	// mX = 0;
+	// mY = 0;
 	mViewWidth = viewWidth;
 	mViewHeight = viewHeight;
 	mTileSize = tileSize;
+	}
+
+	void mapStringToInt(String map){
+		if (map.length() == 2){
+			mX = parseInt(map.substring(0, 1),10);
+			mY = parseInt(map.substring(1, 2),10);
+		}
+		if (map.length() == 4){
+			mX = parseInt(map.substring(0, 2),10);
+			mY = parseInt(map.substring(2, 4),10);
+		}
+		if (map.length() == 3){
+			if(map.indexOf('-') == 0){
+				mX = parseInt(map.substring(0, 2),10);
+				mY = parseInt(map.substring(2, 3),10);
+			}
+			if(map.indexOf('-') == 1){
+				mX = parseInt(map.substring(0, 1),10);
+				mY = parseInt(map.substring(1, 3),10);
+			}
+		}
+		console.log(mX + " : " + mY);
 	}
 
 	void getCurrentMap(){

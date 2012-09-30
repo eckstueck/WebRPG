@@ -89,45 +89,50 @@ class Map{
   		for (int i=0; i < mMapMatrix.length(); i++) {
   			if (mMapMatrix[i] == 2){
 
-  				mGraphic.image(mSprite.get(0,0,50,50),getTile(i).getX(), getTile(i).getY());
+          mGraphic.image(mSprite.get(0,0,50,50),getTile(i).getX(), getTile(i).getY());
 
-  				mGraphic.image(mSprite.get(0,0,50,50),getTile(i-1).getX(), getTile(i-1).getY());
-  				mGraphic.image(mSprite.get(0,0,50,50),getTile(i+1).getX(), getTile(i+1).getY());
+          mGraphic.image(mSprite.get(0,0,50,50),getTile(i-1).getX(), getTile(i-1).getY());
+          mGraphic.image(mSprite.get(0,0,50,50),getTile(i+1).getX(), getTile(i+1).getY());
 
-  				mGraphic.image(mSprite.get(0,0,50,50),getTile(i-mMapWidth).getX(), getTile(i-mMapWidth).getY());
-  				mGraphic.image(mSprite.get(0,0,50,50),getTile(i+mMapWidth).getX(), getTile(i+mMapWidth).getY());
+          mGraphic.image(mSprite.get(0,0,50,50),getTile(i-mMapWidth).getX(), getTile(i-mMapWidth).getY());
+          mGraphic.image(mSprite.get(0,0,50,50),getTile(i+mMapWidth).getX(), getTile(i+mMapWidth).getY());
 
   				if(mMapMatrix[i-mMapWidth + 1] == 2 &&  mMapMatrix[i-mMapWidth] != 2){
-  					mGraphic.image(mSprite.get(0,50,50,50),getTile(i-mMapWidth - 1).getX(), getTile(i-mMapWidth - 1 ).getY());
+  					mGraphic.image(mSprite.get(100,50,50,50),getTile(i-mMapWidth - 1).getX(), getTile(i-mMapWidth - 1 ).getY());
   				}
 
   				if(mMapMatrix[i-mMapWidth - 1] == 2 &&  mMapMatrix[i-mMapWidth] != 2){
-  					mGraphic.pushMatrix();
-  					mGraphic.translate(getTile(i - mMapWidth + 2).getX(), getTile(i - mMapWidth + 2).getY());
-  					mGraphic.rotate(radians(90));
-  					mGraphic.image(mSprite.get(0,50,50,50));
-  					mGraphic.popMatrix();
+  					// mGraphic.pushMatrix();
+  					// mGraphic.translate(getTile(i - mMapWidth + 1).getX(), getTile(i - mMapWidth + 2).getY());
+  					mGraphic.image(mSprite.get(150,50,50,50),getTile(i - mMapWidth + 1).getX(), getTile(i - mMapWidth + 2).getY());
+  					// mGraphic.popMatrix();
+       //      mGraphic.translate(getTile(i - mMapWidth + 1).getX(), getTile(i - mMapWidth + 2).getY());
+       //      mGraphic.image(mSprite.get(200,150,50,50));
+       //      mGraphic.popMatrix();
   				}
 
   				if(mMapMatrix[i+mMapWidth - 1] == 2 &&  mMapMatrix[i+mMapWidth] != 2){
-  					mGraphic.pushMatrix();
-  					mGraphic.translate(getTile(i + (2*mMapWidth) + 2).getX(), getTile(i + (2*mMapWidth) + 2).getY());
-  					mGraphic.rotate(radians(180));
-  					mGraphic.image(mSprite.get(0,50,50,50));
-  					mGraphic.popMatrix();
+  					// mGraphic.pushMatrix();
+  					// mGraphic.translate(getTile(i + (mMapWidth) + 1).getX(), getTile(i + (mMapWidth)).getY());
+  					mGraphic.image(mSprite.get(50,50,50,50),getTile(i + (mMapWidth) + 1).getX(), getTile(i + (mMapWidth)).getY());
+  					// mGraphic.popMatrix();
+            // mGraphic.pushMatrix();
+            // mGraphic.translate(getTile(i + (mMapWidth)).getX(), getTile(i + (mMapWidth)).getY());
+            // mGraphic.image(mSprite.get(100,150,50,50));
+            // mGraphic.popMatrix();
   				}
 
   				if(mMapMatrix[i+mMapWidth + 1] == 2 &&  mMapMatrix[i+mMapWidth] != 2){
-  					mGraphic.pushMatrix();
-  					mGraphic.translate(getTile(i + (2*mMapWidth) -1).getX(), getTile(i + (2*mMapWidth) -1).getY());
-  					mGraphic.rotate(radians(270));
-  					mGraphic.image(mSprite.get(0,50,50,50));
-  					mGraphic.popMatrix();
+  					// mGraphic.pushMatrix();
+  					// mGraphic.translate(getTile(i + (mMapWidth) -1).getX(), getTile(i + (mMapWidth) -1).getY());
+  					mGraphic.image(mSprite.get(0,50,50,50),getTile(i + (mMapWidth) -1).getX(), getTile(i + (mMapWidth) -1).getY());
+  					// mGraphic.popMatrix();
   				}
-  				if(mMapMatrix[i - 2 * mMapWidth] == 2 &&  mMapMatrix[i - mMapWidth] != 2){
-  					mGraphic.image(mSprite.get(100,0,50,50),getTile(i-mMapWidth-1).getX(), getTile(i-mMapWidth-1).getY());
-  					mGraphic.image(mSprite.get(100,0,50,50),getTile(i-mMapWidth+1).getX(), getTile(i-mMapWidth+1).getY());
-  				}
+
+  				// if(mMapMatrix[i - 2 * mMapWidth] == 2 &&  mMapMatrix[i - mMapWidth] != 2){
+  				// 	mGraphic.image(mSprite.get(100,0,50,50),getTile(i-mMapWidth-1).getX(), getTile(i-mMapWidth-1).getY());
+  				// 	mGraphic.image(mSprite.get(100,0,50,50),getTile(i-mMapWidth+1).getX(), getTile(i-mMapWidth+1).getY());
+  				// }
   			}
   		}
   	}
