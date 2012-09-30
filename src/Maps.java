@@ -45,7 +45,6 @@ class Maps{
 				mY = parseInt(map.substring(1, 3),10);
 			}
 		}
-		console.log(mX + " : " + mY);
 	}
 
 	void getCurrentMap(){

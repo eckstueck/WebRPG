@@ -4,7 +4,7 @@
   "scripts": {
     "start": "node WebRPGServer.js"
   },
-  "version": "0.0.1-17",
+  "version": "0.0.1-19",
   "engines": {
     "node": "0.8.x"
   },

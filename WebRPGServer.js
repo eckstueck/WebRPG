@@ -20,7 +20,7 @@ db.open(function (err, db_p) {
 		function (err, replies) {
 			// You are now connected and authenticated.
 			db.createCollection('player', function(err, collection) {
-				// collection.remove({name: 'maik'}, {safe:true}, function(err, result) {});
+				// collection.remove({name: 'peter'}, {safe:true}, function(err, result) {});
 			});
 		});
 });
@@ -104,6 +104,10 @@ io.sockets.on('connection', function (socket) {
 		socket.broadcast.emit('movePlayer', app.get(socket.id));
 	});
 
+	socket.on('playerAttack', function(data){
+		socket.broadcast.emit('attackPlayer', data);
+	});
+
 	socket.on('chatSend', function(data){
 		socket.emit('chat', data);
 		socket.broadcast.emit('chat', data);
@@ -132,7 +136,10 @@ io.sockets.on('connection', function (socket) {
 function createUserList(socket){
 	userList = [];
 	io.sockets.clients().forEach(function (so) {
-		userList.push(app.get(so.id));
+		var player = app.get(so.id);
+		if (player != null){
+			userList.push(player);
+		}
 	});
 	socket.emit('userList', userList);
 	socket.broadcast.emit('addPlayer', app.get(socket.id));

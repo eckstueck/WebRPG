@@ -7,6 +7,8 @@ class Player{
 	int mDirection;
 	boolean mMoving;
 	int mMovingLeft;
+	boolean mAttacking;
+	int mAttackingLeft;
 
 	Player(float x, float y, int d, String map, String name, PImage sprite){
 		mX = x;
@@ -17,9 +19,15 @@ class Player{
 		mDirection = d;  // 0 = right; 1 = up; 2 = left; 3 = down
 		mMoving = false;
 		mMovingLeft = 0;
+		mAttacking = false;
+ 		mAttackingLeft = 0;
 	}
 
 	void draw(){
+		font = loadFont("Arial.ttf"); 
+		textFont(font); 
+		textAlign(CENTER);
+		text(mName, mX + 25, mY);
 		if (mMovingLeft != 0) {
 			switch (mDirection){
 				case 0:
@@ -56,29 +64,61 @@ class Player{
 			}
 		}
 		else{
-			mMoving = false;
-			switch (mDirection){
-				case 0:
-					image(mSprite.get(0,0,50,50),mX, mY);
-					break;
-				case 1:
-					image(mSprite.get(0,150,50,50),mX, mY);
-					break;
-				case 2:
-					image(mSprite.get(0,50,50,50),mX, mY);
-					break;
-				case 3:
-					image(mSprite.get(0,100,50,50),mX, mY);
-					break;
+			if (mAttackingLeft != 0) {
+				var sprite = abs((mAttackingLeft - 100) / 10);
+				mAttackingLeft -= 10;
+				if (mAttackingLeft == 0) mAttacking = false;
+				switch (mDirection){
+					case 0:
+						image(mSprite.get(0 + (50*sprite),200,50,50),mX, mY);
+						break;
+
+					case 1:
+						image(mSprite.get(0 + (50*sprite),350,50,50),mX, mY);
+						break;
+
+				    case 2:
+						image(mSprite.get(0 + (50*sprite),250,50,50),mX, mY);
+						break;
+
+					case 3:
+						image(mSprite.get(0 + (50*sprite),300,50,50),mX, mY);
+						break;
+				}
 			}
-				
+			else{
+				mMoving = false;
+				switch (mDirection){
+					case 0:
+						image(mSprite.get(0,0,50,50),mX, mY);
+						break;
+					case 1:
+						image(mSprite.get(0,150,50,50),mX, mY);
+						break;
+					case 2:
+						image(mSprite.get(0,50,50,50),mX, mY);
+						break;
+					case 3:
+						image(mSprite.get(0,100,50,50),mX, mY);
+						break;
+				}
+			}
 		}
 	}
 
 	void move(int direction){
-		mMoving = true;
-		mDirection = direction;
-		mMovingLeft = 50;
+		if (!mAttacking){
+			mMoving = true;
+			mDirection = direction;
+			mMovingLeft = 50;
+		}
+	}
+
+	void attack(){
+		if (!mMoving){
+			mAttacking = true;
+			mAttackingLeft = 100;
+		}
 	}
 
 	void moveAgain(int direction){
@@ -133,5 +173,8 @@ class Player{
 	}
 	boolean moving(){
 		return mMoving;
+	}
+	boolean attacking(){
+		return mAttacking;
 	}
 }

@@ -1,4 +1,15 @@
-/*@pjs 	preload=" ./maps/00.png, ./maps/10.png, ./maps/01.png, ./sprites/sprite.png, ./sprites/charSprites.png";*/
+/*@pjs 	preload=" 
+./maps/-11.png, 
+./maps/01.png, 
+./maps/11.png, 
+./maps/-10.png, 
+./maps/00.png, 
+./maps/10.png,
+./maps/-1-1.png,
+./maps/0-1.png,
+./maps/1-1.png, 
+./sprites/sprite.png,
+./sprites/charSprites.png";*/
 final int viewWidth = 1000;
 final int viewHeight = 600;
 final int tileSize = 50;
@@ -31,9 +42,15 @@ void setup(){
 void start(String name, float x, float y, int d, String map){
 	//creating Map list and loading Maps
 	mapList = new ArrayList();
+	mapList.add("-11.png");
+	mapList.add("01.png");
+	mapList.add("11.png");
+	mapList.add("-10.png");
 	mapList.add("00.png");
 	mapList.add("10.png");
-	mapList.add("01.png");
+	mapList.add("-1-1.png");
+	mapList.add("0-1.png");
+	mapList.add("1-1.png");
 	maps =  new Maps(mapList, viewWidth, viewHeight, tileSize, map);
 	
 	//creating Player
@@ -183,6 +200,12 @@ void keyPressed(){
 			}
 		}
  	}
+ 	if (keyCode == 32) {
+ 		if (!player.attacking()){
+ 			player.attack();
+ 			if (javascript!=null) javascript.playerAttacked();
+ 		}
+ 	}
 	//log Player position
 //	console.log("Processing: moved to " + player.getX() + " : " + player.getY());
 	// if (javascript!=null && moved != 0){
@@ -230,6 +253,11 @@ void movePlayer(String id, float x, float y, int d, String map, int moved){
 	if (moved == 2){
 		otherPlayer.moveAgain(d);
 	}
+}
+
+void attackPlayer(String id){
+	Player otherPlayer = userList.get(id);
+	otherPlayer.attack();
 }
 
 void alert(){
