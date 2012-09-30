@@ -1,4 +1,4 @@
-/*@pjs 	preload=" ./maps/00.png, ./maps/10.png, ./maps/01.png, ./maps/0-1.png, ./maps/-1-1.png, ./sprites/sprite.png, ./sprites/charSprites.png";*/
+/*@pjs 	preload=" ./maps/00.png, ./maps/10.png, ./maps/01.png, ./sprites/sprite.png, ./sprites/charSprites.png";*/
 final int viewWidth = 1000;
 final int viewHeight = 600;
 final int tileSize = 50;
@@ -34,8 +34,6 @@ void start(String name, float x, float y, int d, String map){
 	mapList.add("00.png");
 	mapList.add("10.png");
 	mapList.add("01.png");
-	mapList.add("0-1.png");
-	mapList.add("-1-1.png");
 	maps =  new Maps(mapList, viewWidth, viewHeight, tileSize, map);
 	
 	//creating Player

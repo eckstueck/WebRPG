@@ -29,7 +29,7 @@ db.open(function (err, db_p) {
 server.listen(80);
 
 //Send files
-app.get('/*/*.(js|css|java|png)', function(req, res){
+app.get('/*/*.(js|css|java|png|mp3|swf|wav)', function(req, res){
   res.sendfile("."+req.url);
 });
 
