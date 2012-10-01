@@ -73,7 +73,7 @@ io.sockets.on('connection', function (socket) {
 	 				}
 	 				if (item){
 	 					console.log("DB: received Player");
-	 					console.log(item.x);
+	 					// console.log(item.x);
 	 					app.set(socket.id, {name: item.name, x: item.x, y: item.y, d: item.d, map: item.map});
 	 					user.push(item.name);
 	 					createUserList(socket);
@@ -121,7 +121,7 @@ io.sockets.on('connection', function (socket) {
 			db.collection('player', function(err, collection) {
 	 			collection.update({name: player.name}, dbPlayer, {safe:true}, function(err, result) {
 	 				if (err) {console.log("error while set Playerposition in DB")};
-	 				console.log(result);
+	 				// console.log(result);
 	 			});
 	 		});
 	 		var i = user.indexOf(socket.id);

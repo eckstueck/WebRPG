@@ -142,8 +142,26 @@ class Player{
 	}
 
 	void changeMap(int x, int y){
-		int mapX = int(mMap.charAt(0)) + x;
-		int mapY = int(mMap.charAt(1)) + y;
+		int mapX = 0;
+		int mapY = 0;
+		if (mMap.length() == 2){
+			mapX = parseInt(mMap.substring(0, 1),10) + x;
+			mapY = parseInt(mMap.substring(1, 2),10) + y;
+		}
+		if (mMap.length() == 4){
+			mapX = parseInt(mMap.substring(0, 2),10) + x;
+			mapY = parseInt(mMap.substring(2, 4),10) + y;
+		}
+		if (mMap.length() == 3){
+			if(mMap.indexOf('-') == 0){
+				mapX = parseInt(mMap.substring(0, 2),10) + x;
+				mapY = parseInt(mMap.substring(2, 3),10) + y;
+			}
+			if(mMap.indexOf('-') == 1){
+				mapX = parseInt(mMap.substring(0, 1),10) + x;
+				mapY = parseInt(mMap.substring(1, 3),10) + y;
+			}
+		}
 		mMap = "" + mapX + mapY;
 	}
 	float getX(){

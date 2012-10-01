@@ -73,7 +73,7 @@ class Map{
       			mWaterList.add(water);
   			}
   		}
-		addSand();
+		// addSand();
   	}
 
   	void drawWater(){

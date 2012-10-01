@@ -244,7 +244,6 @@ void removePlayer(String id){
 
 void movePlayer(String id, float x, float y, int d, String map, int moved){
 //	console.log("Player " + id + " moved to ("  + x + ":" + y +") on Map " + map );
-	console.log(d);
 	Player otherPlayer = userList.get(id);
 	otherPlayer.setX(x);
 	otherPlayer.setY(y);
