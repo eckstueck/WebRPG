@@ -21,6 +21,10 @@ db.open(function (err, db_p) {
 			// You are now connected and authenticated.
 			db.createCollection('player', function(err, collection) {
 				// collection.remove({name: 'peter'}, {safe:true}, function(err, result) {});
+				// collection.find().toArray(function(err, items) {
+				// 	console.log(items);
+				// });
+			// collection.remove();
 			});
 		});
 });
@@ -65,7 +69,9 @@ io.sockets.on('connection', function (socket) {
 	 				if (err) { console.log("error while finding Player " + data.name)};
 	 				if (!item){
 	 					console.log("DB: new Player");
-	 					var player = {name: data.name, x: 500, y: 300, d: 0, map: "00"};
+	 					var now = new Date();
+						var jsonDate = now.toJSON();
+	 					var player = {name: data.name, x: 500, y: 300, d: 0, map: "00", update: jsonDate};
 	 					collection.insert(player);
 	 					app.set(socket.id, {name: data.name, x: 500, y: 300, d: 0, map: "00"});
 	 					user.push(data.name);
@@ -117,7 +123,9 @@ io.sockets.on('connection', function (socket) {
 		console.log(red + "Server: Player %s disconnected" + reset, socket.id);
 		var player = app.get(socket.id);
 		if (player != null){
-			var dbPlayer = {name: player.name, x: player.x, y: player.y, d: player.d, map: player.map};
+			var now = new Date();
+			var jsonDate = now.toJSON();
+			var dbPlayer = {name: player.name, x: player.x, y: player.y, d: player.d, map: player.map, update: jsonDate};
 			db.collection('player', function(err, collection) {
 	 			collection.update({name: player.name}, dbPlayer, {safe:true}, function(err, result) {
 	 				if (err) {console.log("error while set Playerposition in DB")};
