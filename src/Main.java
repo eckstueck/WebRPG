@@ -1,13 +1,13 @@
 /*@pjs 	preload=" 
-./maps/-11.png, 
-./maps/01.png, 
-./maps/11.png, 
-./maps/-10.png, 
-./maps/00.png, 
-./maps/10.png,
-./maps/-1-1.png,
-./maps/0-1.png,
-./maps/1-1.png, 
+./maps/-11.bmp, 
+./maps/01.bmp, 
+./maps/11.bmp, 
+./maps/-10.bmp, 
+./maps/00.bmp, 
+./maps/10.bmp,
+./maps/-1-1.bmp,
+./maps/0-1.bmp,
+./maps/1-1.bmp, 
 ./sprites/sprite.png,
 ./sprites/charSprites.png";*/
 final int viewWidth = 1000;
@@ -42,15 +42,15 @@ void setup(){
 void start(String name, float x, float y, int d, String map){
 	//creating Map list and loading Maps
 	mapList = new ArrayList();
-	mapList.add("-11.png");
-	mapList.add("01.png");
-	mapList.add("11.png");
-	mapList.add("-10.png");
-	mapList.add("00.png");
-	mapList.add("10.png");
-	mapList.add("-1-1.png");
-	mapList.add("0-1.png");
-	mapList.add("1-1.png");
+	mapList.add("-11.bmp");
+	mapList.add("01.bmp");
+	mapList.add("11.bmp");
+	mapList.add("-10.bmp");
+	mapList.add("00.bmp");
+	mapList.add("10.bmp");
+	mapList.add("-1-1.bmp");
+	mapList.add("0-1.bmp");
+	mapList.add("1-1.bmp");
 	maps =  new Maps(mapList, viewWidth, viewHeight, tileSize, map);
 	
 	//creating Player
